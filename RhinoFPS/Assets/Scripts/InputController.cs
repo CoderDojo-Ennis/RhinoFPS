@@ -7,9 +7,5 @@ public class InputController : MonoBehaviour
     public static KeyCode Back = KeyCode.S;
     public static KeyCode Left = KeyCode.A;
     public static KeyCode Right = KeyCode.D;
-
-    void Start ()
-    {
-	
-	}
+    public static KeyCode Jump = KeyCode.Space;
 }
