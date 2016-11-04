@@ -11,6 +11,21 @@ Prefab:
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 1000013712446724}
   m_IsPrefabParent: 1
+--- !u!1 &1000011687687210
+GameObject:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  serializedVersion: 4
+  m_Component:
+  - 4: {fileID: 4000014221190188}
+  m_Layer: 0
+  m_Name: FirePosition
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
 --- !u!1 &1000013379692416
 GameObject:
   m_ObjectHideFlags: 0
@@ -74,11 +89,25 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000013379692416}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.808, z: 0}
+  m_LocalPosition: {x: 0, y: 0.8080001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 4000014221190188}
+  m_Father: {fileID: 4000012539521462}
+  m_RootOrder: 0
+--- !u!4 &4000014221190188
+Transform:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1000011687687210}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -0, y: 0, z: 0.547}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children: []
-  m_Father: {fileID: 4000012539521462}
+  m_Father: {fileID: 4000013090613792}
   m_RootOrder: 0
 --- !u!20 &20000010165775358
 Camera:
@@ -235,7 +264,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_TransformSyncMode: 1
   m_SendInterval: 0.09090909
-  m_SyncRotationAxis: 2
+  m_SyncRotationAxis: 4
   m_RotationSyncCompression: 0
   m_SyncSpin: 0
   m_MovementTheshold: 0.001
@@ -255,12 +284,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpeedMultiplier: 5000
   LocalCamera: {fileID: 4000013090613792}
+  FirePos: {fileID: 4000014221190188}
   maxVelocityChange: 0.5
   JumpForce: 1000
   Grounded: 1
   BulletPrefab: {fileID: 1000011397918196, guid: 5509ccbad841f66488db4ab6511b7cee,
     type: 2}
   BulletSpeed: 6
+  BulletHole: {fileID: 1000010131026726, guid: 5cdb87b899fbda54c839c47e0908d09f, type: 2}
   speed: 6
   jumpSpeed: 8
   gravity: 20

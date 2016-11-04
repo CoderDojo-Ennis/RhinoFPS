@@ -6,27 +6,48 @@ public class CharacterControl : NetworkBehaviour
 {
     public float SpeedMultiplier;
     public Transform LocalCamera;
+    public Transform FirePos;
     Rigidbody rbody;
     public float maxVelocityChange = 10.0f;
     public float JumpForce;
     public bool Grounded;
     public GameObject BulletPrefab;
     public float BulletSpeed;
+    public GameObject BulletHole;
 
     public float speed = 60.0F;
     public float jumpSpeed = 8.0F;
     public float gravity = 20.0F;
 
+    [SyncVar(hook = "OnPlayerColourChange")]
     Color randColor;
     public override void OnStartLocalPlayer()
     {
         randColor = new Color(Random.value, Random.value, Random.value);
-        GetComponent<MeshRenderer>().material.color = randColor;
+        CmdSetColour(randColor);
+        //GetComponent<MeshRenderer>().material.color = randColor;
         rbody = GetComponent<Rigidbody>();
         CursorLockManager.instance.CursorLockable = true;
         CursorLockManager.instance.LockCursor();
         gameObject.layer = 8;
         LocalCamera.gameObject.SetActive(true);
+    }
+
+    public override void OnStartClient()
+    {
+        OnPlayerColourChange(randColor);
+    }
+
+    void OnPlayerColourChange(Color newColour)
+    {
+        GetComponent<MeshRenderer>().material.color = newColour;
+    }
+
+    [Command]
+    void CmdSetColour(Color setColour)
+    {
+        randColor = setColour;
+        //GetComponent<MeshRenderer>().material.color = setColour;
     }
 
     void OnCollisionStay()
@@ -55,11 +76,9 @@ public class CharacterControl : NetworkBehaviour
             if (Physics.Raycast(new Ray(transform.position, Vector3.down), out hitInfo, snapDistance))
             {
                 controller.Move(hitInfo.point - (transform.position + new Vector3(0, controller.height / 2, 0)));
-                Debug.Log("Snap " + hitInfo.distance);
             }
             else
             {
-                Debug.Log("no " + hitInfo.distance);
             }
         }
 
@@ -103,17 +122,17 @@ public class CharacterControl : NetworkBehaviour
             //MoveVector.y -= gravity * Time.deltaTime;
             controller.SimpleMove(MoveVector* Time.deltaTime);
 
-                //MoveVector = transform.TransformDirection(MoveVector);
-                //rbody.AddForce(MoveVector, ForceMode.Impulse);
-                // Apply a force that attempts to reach our target velocity
-                /*
-                Vector3 velocity = rbody.velocity;
-                Vector3 velocityChange = (MoveVector - velocity);
-                velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
-                velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
-                velocityChange.y = 0;
-                rbody.AddForce(velocityChange, ForceMode.VelocityChange);
-                  */
+            //MoveVector = transform.TransformDirection(MoveVector);
+            //rbody.AddForce(MoveVector, ForceMode.Impulse);
+            // Apply a force that attempts to reach our target velocity
+            /*
+            Vector3 velocity = rbody.velocity;
+            Vector3 velocityChange = (MoveVector - velocity);
+            velocityChange.x = Mathf.Clamp(velocityChange.x, -maxVelocityChange, maxVelocityChange);
+            velocityChange.z = Mathf.Clamp(velocityChange.z, -maxVelocityChange, maxVelocityChange);
+            velocityChange.y = 0;
+            rbody.AddForce(velocityChange, ForceMode.VelocityChange);
+              */
 
             /*
                 // Jump
@@ -128,18 +147,37 @@ public class CharacterControl : NetworkBehaviour
             //Shoot
             if (Input.GetKeyDown(InputController.Fire))
             {
-                CmdFire(gameObject);
+                CmdFire(gameObject, FirePos.forward, FirePos.position);
             }
         }
     }
 
     [Command]
-    void CmdFire(GameObject firedBy)
+    void CmdFire(GameObject firedBy, Vector3 bRotation, Vector3 bPosition)
     {
-        GameObject b = (GameObject)Instantiate(BulletPrefab, LocalCamera.position, LocalCamera.rotation);
-        b.GetComponent<Rigidbody>().velocity = b.transform.forward * BulletSpeed;
-        NetworkServer.Spawn(b);
-        firedBy.GetComponent<CharacterControl>().SetBulletLayer(b);
+        RaycastHit info;
+        Debug.Log(bPosition + "rot" + bRotation);
+        if (Physics.Raycast(new Ray(bPosition, bRotation), out info))
+        {
+            Debug.Log(info.transform.name);
+            CharacterControl playerHit = info.transform.GetComponent<CharacterControl>();
+            if (playerHit != null)
+            {
+                Debug.Log("Hit Player");
+                //Damage the enemy
+            }
+            else
+            {
+                Debug.Log("Hit");
+                //Hit something else
+                GameObject hole = (GameObject)Instantiate(BulletHole, info.point,Quaternion.LookRotation(info.normal));
+                NetworkServer.Spawn(hole);
+            }
+        }
+        //GameObject b = (GameObject)Instantiate(BulletPrefab, bPosition, bRotation);
+        //b.GetComponent<Rigidbody>().velocity = b.transform.forward * BulletSpeed;
+        //NetworkServer.Spawn(b);
+        //firedBy.GetComponent<CharacterControl>().SetBulletLayer(b);
         //Debug.Log(b.transform.position);
     }
 
