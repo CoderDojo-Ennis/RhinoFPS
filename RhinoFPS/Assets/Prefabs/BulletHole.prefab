@@ -21,6 +21,7 @@ GameObject:
   - 4: {fileID: 4000010933112106}
   - 114: {fileID: 114000012798726682}
   - 114: {fileID: 114000013484081678}
+  - 114: {fileID: 114481243357459826}
   m_Layer: 0
   m_Name: BulletHole
   m_TagString: Untagged
@@ -52,7 +53,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1000010131026726}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.24586147, y: 0.075, z: 6.010773}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_Children:
@@ -67,8 +68,8 @@ Transform:
   m_GameObject: {fileID: 1000011671722652}
   m_LocalRotation: {x: 1, y: 0, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0.001}
-  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
   m_LocalScale: {x: 0.15, y: 0.15, z: 1}
+  m_LocalEulerAnglesHint: {x: 180, y: 0, z: 0}
   m_Children: []
   m_Father: {fileID: 4000010933112106}
   m_RootOrder: 0
@@ -85,7 +86,7 @@ MeshRenderer:
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
   m_Materials:
-  - {fileID: 2100000, guid: 0509180a6e7967c4db1536dc00731c93, type: 2}
+  - {fileID: 2100000, guid: 0553cccb8e5b75341b8cfc13956a836c, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_ProbeAnchor: {fileID: 0}
