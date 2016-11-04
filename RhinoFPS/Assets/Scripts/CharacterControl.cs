@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
@@ -14,6 +15,8 @@ public class CharacterControl : NetworkBehaviour
     public GameObject BulletPrefab;
     public float BulletSpeed;
     public GameObject BulletHole;
+    public Text NameText;
+    public GameObject LocalCanvas;
 
     public float speed = 60.0F;
     public float jumpSpeed = 8.0F;
@@ -21,21 +24,39 @@ public class CharacterControl : NetworkBehaviour
 
     [SyncVar(hook = "OnPlayerColourChange")]
     Color randColor;
+    [SyncVar(hook = "OnPlayerName")]
+    string playerName;
+    
     public override void OnStartLocalPlayer()
     {
+        playerName = PlayerPrefs.GetString("PlayerName");
         randColor = new Color(Random.value, Random.value, Random.value);
         CmdSetColour(randColor);
+        CmdSetName(playerName);
         //GetComponent<MeshRenderer>().material.color = randColor;
         rbody = GetComponent<Rigidbody>();
         CursorLockManager.instance.CursorLockable = true;
         CursorLockManager.instance.LockCursor();
         gameObject.layer = 8;
         LocalCamera.gameObject.SetActive(true);
+        LocalCanvas.SetActive(false);
     }
 
     public override void OnStartClient()
     {
         OnPlayerColourChange(randColor);
+        OnPlayerName(playerName);
+    }
+
+    void OnPlayerName(string name)
+    {
+        NameText.text = name;
+    }
+
+    [Command]
+    void CmdSetName(string name)
+    {
+        playerName = name;
     }
 
     void OnPlayerColourChange(Color newColour)
