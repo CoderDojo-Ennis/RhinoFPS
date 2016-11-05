@@ -17,7 +17,7 @@ public class BulletHoleScript : MonoBehaviour {
     {
         var mesh = GetComponentInChildren<MeshFilter>().mesh;
         int imageIndex = Random.Range(0, ImageCount - 1);
-        Debug.Log(imageIndex);
+        //Debug.Log(imageIndex);
         float x1 = ((float)imageIndex) / ((float)ImageCount);
         float x2 = ((float)(imageIndex + 1)) / ((float)ImageCount);
 

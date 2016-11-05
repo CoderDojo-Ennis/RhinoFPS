@@ -17,6 +17,10 @@ public class CharacterControl : NetworkBehaviour
     public GameObject BulletHole;
     public Text NameText;
     public GameObject LocalCanvas;
+    public const float MaxHealth = 100;
+    public float BulletDamage = 10;
+    public Slider HealthBarOverhead;
+    public Slider HealthBarLocal;
 
     public float speed = 60.0F;
     public float jumpSpeed = 8.0F;
@@ -26,7 +30,9 @@ public class CharacterControl : NetworkBehaviour
     Color randColor;
     [SyncVar(hook = "OnPlayerName")]
     string playerName;
-    
+    [SyncVar(hook = "OnChangeHealth")]
+    public float Health = MaxHealth;
+
     public override void OnStartLocalPlayer()
     {
         playerName = PlayerPrefs.GetString("PlayerName");
@@ -40,6 +46,7 @@ public class CharacterControl : NetworkBehaviour
         gameObject.layer = 8;
         LocalCamera.gameObject.SetActive(true);
         LocalCanvas.SetActive(false);
+        HealthBarOverhead.maxValue = MaxHealth;
     }
 
     public override void OnStartClient()
@@ -177,20 +184,19 @@ public class CharacterControl : NetworkBehaviour
     void CmdFire(GameObject firedBy, Vector3 bRotation, Vector3 bPosition)
     {
         RaycastHit info;
-        Debug.Log(bPosition + "rot" + bRotation);
+        //Debug.Log(bPosition + "rot" + bRotation);
         if (Physics.Raycast(new Ray(bPosition, bRotation), out info))
         {
-            Debug.Log(info.transform.name);
+            //Debug.Log(info.transform.name);
             CharacterControl playerHit = info.transform.GetComponent<CharacterControl>();
             if (playerHit != null)
             {
                 Debug.Log("Hit Player");
-                //Damage the enemy
+                playerHit.TakeDamage(BulletDamage, this);
             }
             else
             {
-                Debug.Log("Hit");
-                //Hit something else
+                Debug.Log("Hit Object");
                 GameObject hole = (GameObject)Instantiate(BulletHole, info.point,Quaternion.LookRotation(info.normal));
                 NetworkServer.Spawn(hole);
             }
@@ -205,5 +211,28 @@ public class CharacterControl : NetworkBehaviour
     public void SetBulletLayer(GameObject bullet)
     {
         bullet.layer = 9;
+    }
+
+    public void TakeDamage(float amount, CharacterControl hitBy)
+    {
+        if (!isServer)
+        {
+            return;
+        }
+        Health -= amount;
+        if (Health <= 0)
+        {
+            Health = 0;
+            Debug.Log(playerName + " was killed by " + hitBy.playerName);
+        }
+    }
+
+    void OnChangeHealth(float healthChange)
+    {
+        if (isLocalPlayer)
+        {
+            HealthBarLocal.value = healthChange;
+        }
+        HealthBarOverhead.value = healthChange;
     }
 }
