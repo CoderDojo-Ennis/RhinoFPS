@@ -16,7 +16,8 @@ public class CharacterControl : NetworkBehaviour
     public float BulletSpeed;
     public GameObject BulletHole;
     public Text NameText;
-    public GameObject LocalCanvas;
+    public GameObject OnlyLocalPlayer;
+    public GameObject OnlyOtherPlayers;
     public const float MaxHealth = 100;
     public float BulletDamage = 10;
     public Slider HealthBarOverhead;
@@ -32,6 +33,23 @@ public class CharacterControl : NetworkBehaviour
     string playerName;
     [SyncVar(hook = "OnChangeHealth")]
     public float Health = MaxHealth;
+    [SyncVar(hook = "OnKill")]
+    public int Kills;
+    [SyncVar(hook = "OnDie")]
+    public int Deaths;
+
+    void Start()
+    {
+        if (isLocalPlayer)
+        {
+            HealthBarLocal = LocalCanvas.instance.HealthBar;
+            OnlyOtherPlayers.SetActive(false);
+        }
+        else
+        {
+            OnlyLocalPlayer.SetActive(false);
+        }
+    }
 
     public override void OnStartLocalPlayer()
     {
@@ -39,13 +57,10 @@ public class CharacterControl : NetworkBehaviour
         randColor = new Color(Random.value, Random.value, Random.value);
         CmdSetColour(randColor);
         CmdSetName(playerName);
-        //GetComponent<MeshRenderer>().material.color = randColor;
         rbody = GetComponent<Rigidbody>();
         CursorLockManager.instance.CursorLockable = true;
         CursorLockManager.instance.LockCursor();
         gameObject.layer = 8;
-        LocalCamera.gameObject.SetActive(true);
-        LocalCanvas.SetActive(false);
         HealthBarOverhead.maxValue = MaxHealth;
     }
 
@@ -68,7 +83,7 @@ public class CharacterControl : NetworkBehaviour
 
     void OnPlayerColourChange(Color newColour)
     {
-        GetComponent<MeshRenderer>().material.color = newColour;
+        GetComponentInChildren<MeshRenderer>().material.color = newColour;
     }
 
     [Command]
@@ -180,7 +195,7 @@ public class CharacterControl : NetworkBehaviour
         }
     }
 
-    [Command]
+    [Command(channel = 2)]
     void CmdFire(GameObject firedBy, Vector3 bRotation, Vector3 bPosition)
     {
         RaycastHit info;
@@ -223,8 +238,46 @@ public class CharacterControl : NetworkBehaviour
         if (Health <= 0)
         {
             Health = 0;
-            Debug.Log(playerName + " was killed by " + hitBy.playerName);
+            Deaths++;
+            hitBy.Kills++;
+            RpcKillPlayer(netId, hitBy.netId);
         }
+    }
+
+    [ClientRpc]
+    void RpcKillPlayer(NetworkInstanceId killedPlayerId, NetworkInstanceId killerId)
+    {
+        CharacterControl killedPlayer = ClientScene.FindLocalObject(killedPlayerId).GetComponent<CharacterControl>();
+        CharacterControl killer = ClientScene.FindLocalObject(killerId).GetComponent<CharacterControl>();
+        Debug.Log(killedPlayer.playerName + " was killed by " + killer.playerName);
+        killedPlayer.Die();
+    }
+
+    void Die()
+    {
+        if (isLocalPlayer)
+        {
+            Debug.Log("You died");
+            //do local death stuff
+        }
+    }
+
+    void OnKill(int kills)
+    {
+        if (isLocalPlayer)
+        {
+            Debug.Log("Kills = " + kills);
+        }
+        //Set ui scoreboard value
+    }
+
+    void OnDie(int deaths)
+    {
+        if (isLocalPlayer)
+        {
+            Debug.Log("Deaths = " + deaths);
+        }
+        //Set ui scoreboard value
     }
 
     void OnChangeHealth(float healthChange)
