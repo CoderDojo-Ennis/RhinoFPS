@@ -37,6 +37,8 @@ public class CharacterControl : NetworkBehaviour
     public int Kills;
     [SyncVar(hook = "OnDie")]
     public int Deaths;
+    [SyncVar]
+    public int Latency;
 
     void Start()
     {
@@ -287,5 +289,11 @@ public class CharacterControl : NetworkBehaviour
             HealthBarLocal.value = healthChange;
         }
         HealthBarOverhead.value = healthChange;
+    }
+
+    [Command]
+    void CmdGetPing(NetworkPlayer player)
+    {
+        Latency = Network.GetAveragePing(player);
     }
 }

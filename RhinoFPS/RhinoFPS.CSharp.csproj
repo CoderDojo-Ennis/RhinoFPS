@@ -92,6 +92,8 @@
     <Compile Include="Assets\Scripts\InputController.cs" />
     <Compile Include="Assets\Scripts\LocalCanvas.cs" />
     <Compile Include="Assets\Scripts\MenuUI.cs" />
+    <Compile Include="Assets\Scripts\ScoreboardContent.cs" />
+    <Compile Include="Assets\Scripts\ScoreboardListItemScript.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\ProCore\ProBuilder\API Examples\Icosphere FFT\README.txt" />
