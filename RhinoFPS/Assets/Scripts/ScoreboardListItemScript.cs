@@ -3,7 +3,7 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
 
-public class ScoreboardListItemScript : ScoreboardContent
+public class ScoreboardListItemScript : MonoBehaviour
 {
     public Text PlayerNameText;
     public Text LatencyText;
@@ -11,14 +11,11 @@ public class ScoreboardListItemScript : ScoreboardContent
     public Text DeathsText;
     public CharacterControl Player;
 	
-    void Start()
+	void Update ()
     {
-        //yerNameText.text = Player
-        //LatencyText = Network.GetLastPing(Player);
+        PlayerNameText.text = Player.name;
+        LatencyText.text = Player.Latency.ToString();
+        KillsText.text = Player.Kills.ToString();
+        DeathsText.text = Player.Deaths.ToString();
     }
-
-	// Update is called once per frame
-	void Update () {
-	
-	}
 }

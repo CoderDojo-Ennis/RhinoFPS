@@ -1483,7 +1483,7 @@ GameObject:
   - 4: {fileID: 791084385}
   - 114: {fileID: 791084386}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: SpawnPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1523,6 +1523,7 @@ GameObject:
   - 4: {fileID: 794183747}
   - 114: {fileID: 794183746}
   - 114: {fileID: 794183745}
+  - 114: {fileID: 794183748}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -1630,6 +1631,17 @@ Transform:
   - {fileID: 791084385}
   m_Father: {fileID: 0}
   m_RootOrder: 8
+--- !u!114 &794183748
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 794183744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 40f2cfdffcbbd1144a4ef5c8a2b44a1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &811510984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2067,8 +2079,8 @@ RectTransform:
   m_RootOrder: 1
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 178.13}
-  m_SizeDelta: {x: 625, y: 29.75}
+  m_AnchoredPosition: {x: 0, y: 188.75}
+  m_SizeDelta: {x: 861, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1049965468
 MonoBehaviour:
@@ -2227,10 +2239,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3c159c27ca9c6194883308f7e1c15260, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerName: 
-  Latency: 0
-  Kills: 0
-  Deaths: 0
   PlayerNameText: {fileID: 0}
   LatencyText: {fileID: 0}
   KillsText: {fileID: 0}
@@ -3248,7 +3256,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 59f8224f176244b4d89e3a8e80e1adf1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  HealthBar: {fileID: 1015195438}
+  HealthBar: {fileID: 0}
 --- !u!114 &1685817311
 MonoBehaviour:
   m_ObjectHideFlags: 0

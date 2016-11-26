@@ -22,6 +22,8 @@ public class CharacterControl : NetworkBehaviour
     public float BulletDamage = 10;
     public Slider HealthBarOverhead;
     public Slider HealthBarLocal;
+    public string ServerIP;
+    Ping serverPing = null;
 
     public float speed = 60.0F;
     public float jumpSpeed = 8.0F;
@@ -44,6 +46,7 @@ public class CharacterControl : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
+            InvokeRepeating("PingServer", 1f, 3f);
             HealthBarLocal = LocalCanvas.instance.HealthBar;
             OnlyOtherPlayers.SetActive(false);
         }
@@ -70,6 +73,11 @@ public class CharacterControl : NetworkBehaviour
     {
         OnPlayerColourChange(randColor);
         OnPlayerName(playerName);
+    }
+
+    public void OnConnected(NetworkConnection conn, NetworkReader reader)
+    {
+        ServerIP = conn.address;
     }
 
     void OnPlayerName(string name)
@@ -126,7 +134,11 @@ public class CharacterControl : NetworkBehaviour
             {
             }
         }
-
+        if (serverPing.isDone)
+        {
+            Latency = serverPing.time;
+            CmdSetLatency(Latency);
+        }
     }
 
     void FixedUpdate()
@@ -291,9 +303,17 @@ public class CharacterControl : NetworkBehaviour
         HealthBarOverhead.value = healthChange;
     }
 
-    [Command]
-    void CmdGetPing(NetworkPlayer player)
+    void PingServer()
     {
-        Latency = Network.GetAveragePing(player);
+        if (ServerIP != null && (serverPing.isDone || serverPing == null))
+        {
+            serverPing = new Ping(ServerIP);
+        }
+    }
+
+    [Command]
+    void CmdSetLatency(int l)
+    {
+        Latency = l;
     }
 }
