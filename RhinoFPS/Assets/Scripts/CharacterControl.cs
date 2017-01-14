@@ -2,6 +2,7 @@
 using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.Collections;
+using UnityEngine.Networking.NetworkSystem;
 
 public class CharacterControl : NetworkBehaviour
 {
@@ -39,14 +40,11 @@ public class CharacterControl : NetworkBehaviour
     public int Kills;
     [SyncVar(hook = "OnDie")]
     public int Deaths;
-    [SyncVar]
-    public int Latency;
 
     void Start()
     {
         if (isLocalPlayer)
         {
-            InvokeRepeating("PingServer", 1f, 3f);
             HealthBarLocal = LocalCanvas.instance.HealthBar;
             OnlyOtherPlayers.SetActive(false);
         }
@@ -73,11 +71,6 @@ public class CharacterControl : NetworkBehaviour
     {
         OnPlayerColourChange(randColor);
         OnPlayerName(playerName);
-    }
-
-    public void OnConnected(NetworkConnection conn, NetworkReader reader)
-    {
-        ServerIP = conn.address;
     }
 
     void OnPlayerName(string name)
@@ -133,11 +126,6 @@ public class CharacterControl : NetworkBehaviour
             else
             {
             }
-        }
-        if (serverPing.isDone)
-        {
-            Latency = serverPing.time;
-            CmdSetLatency(Latency);
         }
     }
 
@@ -220,12 +208,12 @@ public class CharacterControl : NetworkBehaviour
             CharacterControl playerHit = info.transform.GetComponent<CharacterControl>();
             if (playerHit != null)
             {
-                Debug.Log("Hit Player");
+                //Debug.Log("Hit Player");
                 playerHit.TakeDamage(BulletDamage, this);
             }
             else
             {
-                Debug.Log("Hit Object");
+                //Debug.Log("Hit Object");
                 GameObject hole = (GameObject)Instantiate(BulletHole, info.point,Quaternion.LookRotation(info.normal));
                 NetworkServer.Spawn(hole);
             }
@@ -302,18 +290,5 @@ public class CharacterControl : NetworkBehaviour
         }
         HealthBarOverhead.value = healthChange;
     }
-
-    void PingServer()
-    {
-        if (ServerIP != null && (serverPing.isDone || serverPing == null))
-        {
-            serverPing = new Ping(ServerIP);
-        }
-    }
-
-    [Command]
-    void CmdSetLatency(int l)
-    {
-        Latency = l;
-    }
+    public static short Score = MsgType.Highest + 1;
 }

@@ -1521,7 +1521,6 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 794183747}
-  - 114: {fileID: 794183746}
   - 114: {fileID: 794183745}
   - 114: {fileID: 794183748}
   m_Layer: 0
@@ -1546,7 +1545,21 @@ MonoBehaviour:
   showGUI: 1
   offsetX: 0
   offsetY: 0
---- !u!114 &794183746
+--- !u!4 &794183747
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 794183744}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_Children:
+  - {fileID: 791084385}
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+--- !u!114 &794183748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
@@ -1554,7 +1567,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 794183744}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: -822479833, guid: 870353891bb340e2b2a9c8707e7419ba, type: 3}
+  m_Script: {fileID: 11500000, guid: 40f2cfdffcbbd1144a4ef5c8a2b44a1d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_NetworkPort: 7777
@@ -1572,10 +1585,8 @@ MonoBehaviour:
   m_PlayerSpawnMethod: 0
   m_OfflineScene: 
   m_OnlineScene: 
-  m_SpawnPrefabs:
-  - {fileID: 1000011397918196, guid: 5509ccbad841f66488db4ab6511b7cee, type: 2}
-  - {fileID: 1000010131026726, guid: 5cdb87b899fbda54c839c47e0908d09f, type: 2}
-  m_CustomConfig: 1
+  m_SpawnPrefabs: []
+  m_CustomConfig: 0
   m_MaxConnections: 4
   m_ConnectionConfig:
     m_PacketSize: 1500
@@ -1604,7 +1615,7 @@ MonoBehaviour:
     m_ReactorMaximumReceivedMessages: 1024
     m_ReactorMaximumSentMessages: 1024
     m_MaxPacketSize: 2000
-  m_Channels: 050000000000000008000000
+  m_Channels: 
   m_UseWebSockets: 0
   m_UseSimulator: 0
   m_SimulatedLatency: 1
@@ -1617,31 +1628,7 @@ MonoBehaviour:
   matchSize: 4
   isNetworkActive: 0
   matchMaker: {fileID: 0}
---- !u!4 &794183747
-Transform:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 794183744}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_Children:
-  - {fileID: 791084385}
-  m_Father: {fileID: 0}
-  m_RootOrder: 8
---- !u!114 &794183748
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 794183744}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40f2cfdffcbbd1144a4ef5c8a2b44a1d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  Players: []
 --- !u!1 &811510984
 GameObject:
   m_ObjectHideFlags: 0
@@ -2137,7 +2124,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1199338527
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2223,10 +2210,10 @@ RectTransform:
   m_Children: []
   m_Father: {fileID: 951080651}
   m_RootOrder: 0
-  m_AnchorMin: {x: 0, y: 0}
-  m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 269.5, y: -25}
+  m_SizeDelta: {x: 519, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1218415001
 MonoBehaviour:

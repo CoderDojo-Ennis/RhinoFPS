@@ -13,9 +13,12 @@ public class ScoreboardListItemScript : MonoBehaviour
 	
 	void Update ()
     {
-        PlayerNameText.text = Player.name;
-        LatencyText.text = Player.Latency.ToString();
-        KillsText.text = Player.Kills.ToString();
-        DeathsText.text = Player.Deaths.ToString();
+        if (Player != null)
+        {
+            PlayerNameText.text = Player.name;
+            //LatencyText.text = Player.Latency.ToString();
+            KillsText.text = Player.Kills.ToString();
+            DeathsText.text = Player.Deaths.ToString();
+        }
     }
 }
