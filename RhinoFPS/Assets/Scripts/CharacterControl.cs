@@ -25,6 +25,7 @@ public class CharacterControl : NetworkBehaviour
     public Slider HealthBarLocal;
     public string ServerIP;
     Ping serverPing = null;
+    WeaponClass CurrentWeapon;
 
     public float speed = 60.0F;
     public float jumpSpeed = 8.0F;
@@ -65,6 +66,7 @@ public class CharacterControl : NetworkBehaviour
         CursorLockManager.instance.LockCursor();
         gameObject.layer = 8;
         HealthBarOverhead.maxValue = MaxHealth;
+        CurrentWeapon = GetComponentInChildren<WeaponClass>();
     }
 
     public override void OnStartClient()
@@ -86,7 +88,13 @@ public class CharacterControl : NetworkBehaviour
 
     void OnPlayerColourChange(Color newColour)
     {
-        GetComponentInChildren<MeshRenderer>().material.color = newColour;
+        foreach(MeshRenderer r in GetComponentsInChildren<MeshRenderer>())
+        {
+            if (r.gameObject.name.Contains("_colour"))
+            {
+                r.material.color = newColour;
+            }
+        }
     }
 
     [Command]
@@ -192,7 +200,20 @@ public class CharacterControl : NetworkBehaviour
             //Shoot
             if (Input.GetKeyDown(InputController.Fire))
             {
-                CmdFire(gameObject, FirePos.forward, FirePos.position);
+                if (CurrentWeapon.Ammo <= 0)
+                {
+                    Debug.Log("Out of ammo");
+                }
+                else
+                {
+                    CurrentWeapon.OnShoot();
+                    CmdFire(gameObject, FirePos.forward, FirePos.position);
+                }
+            }
+
+            if (Input.GetKeyDown(InputController.Reload))
+            {
+                CurrentWeapon.Reload();
             }
         }
     }
@@ -206,7 +227,7 @@ public class CharacterControl : NetworkBehaviour
         {
             //Debug.Log(info.transform.name);
             CharacterControl playerHit = info.transform.GetComponent<CharacterControl>();
-            if (playerHit != null)
+            if (playerHit != null)  
             {
                 //Debug.Log("Hit Player");
                 playerHit.TakeDamage(BulletDamage, this);
@@ -259,7 +280,7 @@ public class CharacterControl : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            Debug.Log("You died");
+            Debug.Log("You r ded");
             //do local death stuff
         }
     }

@@ -10,6 +10,7 @@ public class InputController : MonoBehaviour
     public static KeyCode Jump = KeyCode.Space;
     public static KeyCode Fire = KeyCode.Mouse0;
     public static KeyCode Pause = KeyCode.Escape;
+    public static KeyCode Reload = KeyCode.R;
 
     public static float MouseSensitivity = 10f;
 
