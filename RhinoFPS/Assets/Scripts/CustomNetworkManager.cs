@@ -48,7 +48,7 @@ public class CustomNetworkManager : NetworkManager
             {
                 rtt = NetworkTransport.GetCurrentRtt(c.hostId, c.connectionId, out error);
             }
-            Debug.Log(c.playerControllers[0].gameObject.GetComponent<CharacterControl>().NameText.text + " " + rtt);
+            //Debug.Log(c.playerControllers[0].gameObject.GetComponent<CharacterControl>().NameText.text + " " + rtt);
         }
         //EmptyMessage msg = new EmptyMessage();420
         //NetworkServer.SendToAll(Score, msg);
