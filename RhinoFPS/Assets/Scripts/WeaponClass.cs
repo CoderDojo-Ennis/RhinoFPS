@@ -11,11 +11,8 @@ public class WeaponClass : MonoBehaviour
 
 	void Start ()
     {
-        Ammo = AmmoCapacity;	
-	}
-	
-    void Update () {
-		
+        Ammo = AmmoCapacity;
+        UpdateCounter();	
 	}
 
     public void OnShoot()

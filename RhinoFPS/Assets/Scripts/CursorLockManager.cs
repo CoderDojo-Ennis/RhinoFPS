@@ -14,12 +14,22 @@ public class CursorLockManager : MonoBehaviour
 	
 	void Update ()
     {
+        /*
         if (Input.GetKeyDown(InputController.Pause))
         {
             UnlockCursor();
         }
 
         if (Input.GetKeyDown(InputController.Fire))
+        {
+            LockCursor();
+        }
+        */
+        if (Input.GetKeyDown(InputController.Scoreboard))
+        {
+            UnlockCursor();
+        }
+        if (Input.GetKeyUp(InputController.Scoreboard))
         {
             LockCursor();
         }
