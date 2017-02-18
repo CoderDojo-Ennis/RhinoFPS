@@ -6,7 +6,10 @@ public class LocalCanvas : MonoBehaviour
 {
     public static LocalCanvas instance;
     public Slider HealthBar;
-	void Start ()
+    public GameObject Crosshair;
+    public GameObject SceneCam;
+    
+    void Start ()
     {
         instance = this;
 	}
