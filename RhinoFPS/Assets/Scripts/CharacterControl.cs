@@ -44,14 +44,12 @@ public class CharacterControl : NetworkBehaviour
 
     void Start()
     {
+        Health = MaxHealth;
+        SetPlayerActive(true);
         if (isLocalPlayer)
         {
             HealthBarLocal = LocalCanvas.instance.HealthBar;
-            OnlyOtherPlayers.SetActive(false);
-        }
-        else
-        {
-            OnlyLocalPlayer.SetActive(false);
+            SetInGameUI(true);
         }
     }
 
@@ -278,11 +276,45 @@ public class CharacterControl : NetworkBehaviour
 
     void Die()
     {
+        SetInGameUI(false);
+        SetPlayerActive(false);
         if (isLocalPlayer)
         {
             Debug.Log("You r ded");
             //do local death stuff
         }
+        StartCoroutine(Respawn());
+    }
+
+    public void SetInGameUI(bool InGame)
+    {
+        if (isLocalPlayer)
+        {
+            LocalCanvas.instance.SceneCam.SetActive(!InGame);
+            LocalCanvas.instance.Crosshair.SetActive(InGame);
+        }
+    }
+
+    void SetPlayerActive(bool active)
+    {
+        if (active)
+        {
+            OnlyLocalPlayer.SetActive(isLocalPlayer);
+            OnlyOtherPlayers.SetActive(!isLocalPlayer);
+        }
+        else
+        {
+            OnlyOtherPlayers.SetActive(false);
+            OnlyLocalPlayer.SetActive(false);
+        }
+    }
+
+    IEnumerator Respawn()
+    {
+        Health = MaxHealth;
+        yield return new WaitForSeconds(3);
+        SetPlayerActive(true);
+        SetInGameUI(true);
     }
 
     void OnKill(int kills)
